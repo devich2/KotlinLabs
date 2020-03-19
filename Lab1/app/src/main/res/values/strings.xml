@@ -8,4 +8,11 @@
         <item>Option3</item>
         <item>Option4</item>
     </string-array>
+
+    <string-array name="options2">
+        <item>Question2</item>
+        <item>Option1</item>
+        <item>Option2</item>
+    </string-array>
+
 </resources>

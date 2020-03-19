@@ -15,17 +15,17 @@
 
     <FrameLayout
         android:id="@+id/frame2"
-        android:layout_width="177dp"
-        android:layout_height="362dp"
-        android:layout_marginLeft="200sp">
+        android:layout_width="211dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="200sp"
+        android:background="#A5DF65">
 
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/frame1"
-        android:layout_width="188dp"
-        android:layout_height="360dp">
-
-    </FrameLayout>
+        android:layout_width="202dp"
+        android:layout_height="match_parent"
+        android:background="#03A9F4"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

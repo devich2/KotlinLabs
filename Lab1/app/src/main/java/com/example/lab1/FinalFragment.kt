@@ -1,21 +1,18 @@
 package com.example.lab1
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
 
-
-class ListFragment : Fragment() {
-
+class FinalFragment : Fragment() {
     private lateinit var checkBoxMap: MutableList<CheckBox>
     public lateinit var btnDisplay: Button
     private lateinit var btnCancel: Button
@@ -28,7 +25,7 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.list, container, false)
+        val view = inflater.inflate(R.layout.final_question, container, false)
         return view
     }
 
@@ -47,18 +44,20 @@ class ListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         init()
     }
+
     private fun processBundle()
     {
-    for(s in checkedList)
-    {
-        checkBoxMap[s].isChecked = true
-    }
+        for(s in checkedList)
+        {
+            checkBoxMap[s].isChecked = true
+        }
     }
 
     private fun init() {
         createLayout()
         addGlobalEventListeners()
     }
+
     override fun onStart() {
         super.onStart()
         if(::checkedList.isInitialized)
@@ -88,6 +87,7 @@ class ListFragment : Fragment() {
                 var text = question.text
                 var noCheck = true
                 var CheckedIndex = 0
+                var arrayList : ArrayList<Int> = ArrayList<Int>()
                 checkedList = ArrayList<Int>()
 
                 for (cb in checkBoxMap) {
@@ -121,31 +121,30 @@ class ListFragment : Fragment() {
 
     private fun createLayout() {
 
-            val linearLayout = view?.findViewById<LinearLayout>(R.id.liner);
-            question = TextView(context)
-            btnDisplay = Button(context)
-            btnCancel = Button(context)
-            checkBoxMap = mutableListOf()
+        val linearLayout = view?.findViewById<LinearLayout>(R.id.final_liner);
+        question = TextView(context)
+        btnDisplay = Button(context)
+        btnCancel = Button(context)
+        checkBoxMap = mutableListOf()
 
-            btnDisplay.text = "Check answer!"
-            btnCancel.text = "Back"
-            question.textSize = 15f
+        btnDisplay.text = "Check answer!"
+        btnCancel.text = "Back"
+        question.textSize = 15f
 
-            val res: Array<String> = resources.getStringArray(R.array.options)
-            question.text = res[0]
+        val res: Array<String> = resources.getStringArray(R.array.options2)
+        question.text = res[0]
 
-            for (i in 1 until res.size) {
-                var checkBox = CheckBox(context)
-                checkBox.text = res[i]
-                checkBoxMap.add(checkBox)
-            }
+        for (i in 1 until res.size) {
+            var checkBox = CheckBox(context)
+            checkBox.text = res[i]
+            checkBoxMap.add(checkBox)
+        }
 
-            linearLayout?.addView(question)
-            for (cb in checkBoxMap) {
-                linearLayout?.addView(cb)
-            }
-            linearLayout?.addView(btnDisplay)
-            linearLayout?.addView(btnCancel)
+        linearLayout?.addView(question)
+        for (cb in checkBoxMap) {
+            linearLayout?.addView(cb)
+        }
+        linearLayout?.addView(btnDisplay)
+        linearLayout?.addView(btnCancel)
     }
-
 }
