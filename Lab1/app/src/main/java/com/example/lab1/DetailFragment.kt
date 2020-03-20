@@ -12,8 +12,7 @@ import androidx.core.view.get
 import android.widget.EditText
 
 
-
-class DetailFragment : Fragment(){
+class DetailFragment : Fragment() {
 
     fun setText(item: String) {
         val textView = TextView(context)
@@ -22,9 +21,8 @@ class DetailFragment : Fragment(){
         linearLayout?.addView(textView)
     }
 
-    fun deleteLast()
-    {
-        val list : MutableList<TextView> = mutableListOf()
+    fun deleteLast() {
+        val list: MutableList<TextView> = mutableListOf()
         val linearLayout = view?.findViewById<LinearLayout>(R.id.detail_liner);
         for (i in 0 until linearLayout!!.getChildCount())
             if (linearLayout.getChildAt(i) is TextView)
@@ -34,7 +32,7 @@ class DetailFragment : Fragment(){
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup ?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.detail, container, false)
