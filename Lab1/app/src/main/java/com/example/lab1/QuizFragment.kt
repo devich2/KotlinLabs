@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,9 @@ abstract class QuizFragment : Fragment() {
     private lateinit var btnDisplay: Button
     private lateinit var btnCancel: Button
     private lateinit var callback: INavigation
-    private lateinit var toBack: INavigation
     private lateinit var question: TextView
     private lateinit var checkedList: ArrayList<Int>
+    private var bundle: Bundle = Bundle()
     abstract val resourceIdentifier: Int
     abstract val layoutIdentifier: Int
     abstract val questionIdentifier: Int
@@ -28,6 +29,7 @@ abstract class QuizFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(resourceIdentifier, container, false)
+        if(arguments != null) bundle = arguments as Bundle
         return view
     }
 
@@ -75,7 +77,7 @@ abstract class QuizFragment : Fragment() {
 
     private fun update(text: String) {
         if (::callback.isInitialized) {
-            callback.Update(text, this)
+            callback.Update(text, this, bundle)
         }
     }
 
@@ -98,6 +100,7 @@ abstract class QuizFragment : Fragment() {
                 if (noCheck) {
                    ShowToast("Nothing selected", 0, 800, Color.RED)
                 } else {
+                    bundle.putString(question.text as String, text as String)
                     update(text.toString())
                 }
             }
