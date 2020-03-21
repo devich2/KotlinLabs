@@ -1,11 +1,10 @@
-package com.example.lab1
+package com.example.lab1.Database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.DatabaseUtils
-import android.util.Log
 
 
 class QuizRepository {
@@ -35,12 +34,16 @@ class QuizRepository {
         return database?.query(DbContract.Quiz.TABLE_NAME, columns, null, null, null, null, null)
     }
 
+    fun truncate()
+    {
+       database?.execSQL("DELETE FROM " + DbContract.Quiz.TABLE_NAME)
+
+    }
     fun getResults(): List<Result> {
         val results: ArrayList<Result> = ArrayList()
         val cursor = getAllEntries()
         if(cursor != null)
         {
-            Log.d("JASD","JUST")
             if (cursor.moveToFirst()) {
                 do {
                     val id = cursor.getInt(cursor.getColumnIndex(DbContract.Quiz.COLUMN_USER_ID))
@@ -56,7 +59,9 @@ class QuizRepository {
     }
 
     fun getCount(): Long {
-        return DatabaseUtils.queryNumEntries(database, DbContract.Quiz.TABLE_NAME)
+        return DatabaseUtils.queryNumEntries(database,
+            DbContract.Quiz.TABLE_NAME
+        )
     }
 
     fun getResult(id: Long): Result? {
@@ -98,7 +103,6 @@ class QuizRepository {
     }
 
     fun update(result: Result): Long? {
-
         val whereClause = "${DbContract.Quiz.COLUMN_USER_ID} = ?"
         val cv = ContentValues()
         val whereArgs = arrayOf(result.id.toString())

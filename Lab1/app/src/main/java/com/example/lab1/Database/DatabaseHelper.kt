@@ -1,15 +1,14 @@
-package com.example.lab1
+package com.example.lab1.Database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.provider.SyncStateContract.Helpers.update
-import android.content.ContentValues
-import java.nio.file.Files.delete
 
 
-
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null,
+    DATABASE_VERSION
+) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(SQL_CREATE_ENTRIES)

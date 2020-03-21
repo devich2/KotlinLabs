@@ -3,15 +3,17 @@ package com.example.lab1
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.ArrayAdapter
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.content.Intent
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.util.Log
-import kotlinx.android.synthetic.main.detail.*
+import android.widget.Toast
+import com.example.lab1.Activities.DataActivity
+import com.example.lab1.Database.QuizRepository
+import com.example.lab1.Database.Result
+import com.example.lab1.Fragment.DetailFragment
+import com.example.lab1.Fragment.FinalFragment
+import com.example.lab1.Fragment.INavigation
+import com.example.lab1.Fragment.QuestionFragment
+import com.example.lab1.Fragment.QuizFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), INavigation {
@@ -25,9 +27,9 @@ class MainActivity : AppCompatActivity(), INavigation {
         }
     }
 
-    override fun Update(s: String, frag: QuizFragment, bundle: Bundle) {
+    override fun Update(question: String, frag: QuizFragment, bundle: Bundle) {
         val fragment = supportFragmentManager.findFragmentById(R.id.frame2) as DetailFragment
-        fragment.setText(s)
+        fragment.setText(question + "\nAnswers:" + bundle[question] as String)
         if (frag !is FinalFragment) {
             val newFragment = FinalFragment()
             newFragment.arguments = bundle
@@ -55,8 +57,15 @@ class MainActivity : AppCompatActivity(), INavigation {
     }
 
     fun openData() {
-        val intent: Intent = Intent(this, DataActivity::class.java)
-        startActivity(intent)
+        if(QuizRepository(this).open().getCount() == 0L)
+        {
+            Toast.makeText(applicationContext, "Empty storage", Toast.LENGTH_SHORT).show()
+        }
+        else
+        {
+            val intent: Intent = Intent(this, DataActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun DeleteLastInfo() {

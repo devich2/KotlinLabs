@@ -1,10 +1,8 @@
-package com.example.lab1
+package com.example.lab1.Fragment
 
 import android.app.Activity
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -75,24 +73,23 @@ abstract class QuizFragment : Fragment() {
         }
     }
 
-    private fun update(text: String) {
+    private fun update() {
         if (::callback.isInitialized) {
-            callback.Update(text, this, bundle)
+            callback.Update(question.text as String, this, bundle)
         }
     }
 
     private fun addGlobalEventListeners() {
         if (::btnDisplay.isInitialized) {
             btnDisplay.setOnClickListener {
-                var text = question.text
+                var text = ""
                 var noCheck = true
                 var CheckedIndex = 0
                 checkedList = ArrayList<Int>()
-
                 for (cb in checkBoxMap) {
                     if (cb.isChecked) {
                         noCheck = false
-                        text = text as String + "\n" + cb.text
+                        text = text + "\n" + cb.text
                         checkedList.add(CheckedIndex)
                     }
                     CheckedIndex += 1
@@ -100,8 +97,8 @@ abstract class QuizFragment : Fragment() {
                 if (noCheck) {
                    ShowToast("Nothing selected", 0, 800, Color.RED)
                 } else {
-                    bundle.putString(question.text as String, text as String)
-                    update(text.toString())
+                    bundle.putString(question.text as String, text)
+                    update()
                 }
             }
         }
