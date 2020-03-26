@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.lab1.Activities.DataActivity
@@ -15,39 +16,43 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Navigation {
     private var confirmed: Boolean = false
-    private val initialFragment = ::QuestionFragment
-    private val detailFragment = ::DetailFragment
+    private val initialFragment = QuestionFragment::class.java
+    private val detailFragment = DetailFragment::class.java
     private val dict: HashMap<Class<*>, Class<*>> = hashMapOf()
     private lateinit var rep: QuizRepository
 
-    override fun Cancel(frag: QuizFragment) {
+    override fun cancel(frag: QuizFragment) {
         if (frag !is QuestionFragment) {
             supportFragmentManager.popBackStack()
             deleteInfo(if(confirmed) 2 else 1)
-        } else {
-            frag.ShowDisplayButton(true)
         }
+
+        if(frag is FinalFragment) {
+            frag.ShowDisplayButton(true)
+            confirmed = false
+        }
+
     }
 
-    override fun Update(question: String, frag: QuizFragment, bundle: Bundle) {
+    override fun update(question: String, frag: QuizFragment, bundle: Bundle) {
         val fragment = supportFragmentManager.findFragmentById(R.id.frame2) as DetailFragment
         fragment.setText(question + "\nAnswers:" + bundle[question] as String)
-        if (frag !is FinalFragment) {
+
+        val hasKey = dict.containsKey(frag::class.java)
+        if (hasKey) {
             val newFrag = dict.getValue(frag::class.java).newInstance() as QuizFragment
             newFrag.arguments = bundle
             replaceQuizFragment(newFrag)
-            confirmed = false
         } else {
-            frag.ShowToast("Answer saved", 0, 800, Color.BLUE)
+            frag.showToast("Answer saved", 0, 800, Color.BLUE)
+            frag.ShowDisplayButton(false)
             saveData(bundle)
             confirmed = true
-            frag.ShowDisplayButton(false)
         }
     }
 
     private fun replaceQuizFragment(fragment: Fragment) {
-        val fragmentTransaction =
-            supportFragmentManager.beginTransaction()
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame1, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
@@ -73,9 +78,14 @@ class MainActivity : AppCompatActivity(), Navigation {
         else
         {
             val intent = Intent(this, DataActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 10)
         }
         rep.close()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
     private fun deleteInfo(count: Int) {
@@ -95,7 +105,7 @@ class MainActivity : AppCompatActivity(), Navigation {
     }
 
     private fun initFragments() {
-        supportFragmentManager.beginTransaction().add(R.id.frame1, initialFragment()).add(R.id.frame2, detailFragment())
+        supportFragmentManager.beginTransaction().add(R.id.frame1, initialFragment.newInstance()).add(R.id.frame2, detailFragment.newInstance())
             .commit()
     }
 

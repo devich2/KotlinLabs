@@ -69,13 +69,13 @@ abstract class QuizFragment : Fragment() {
 
     private fun back() {
         if (::callback.isInitialized) {
-            callback.Cancel(this)
+            callback.cancel(this)
         }
     }
 
     private fun update() {
         if (::callback.isInitialized) {
-            callback.Update(question.text as String, this, bundle)
+            callback.update(question.text as String, this, bundle)
         }
     }
 
@@ -95,7 +95,7 @@ abstract class QuizFragment : Fragment() {
                     CheckedIndex += 1
                 }
                 if (noCheck) {
-                   ShowToast("Nothing selected", 0, 800, Color.RED)
+                   showToast("Nothing selected", 0, 800, Color.RED)
                 } else {
                     bundle.putString(question.text as String, text)
                     update()
@@ -110,7 +110,7 @@ abstract class QuizFragment : Fragment() {
         }
     }
 
-    fun ShowToast(text: String, x: Int, y: Int, color: Int)
+    fun showToast(text: String, x: Int, y: Int, color: Int)
     {
         val toast = Toast.makeText(
             context, text,

@@ -46,11 +46,13 @@ class QuizRepository {
         {
             if (cursor.moveToFirst()) {
                 do {
-                    val id = cursor.getInt(cursor.getColumnIndex(DbContract.Quiz.COLUMN_USER_ID))
-                    val name = cursor.getString(cursor.getColumnIndex(DbContract.Quiz.COLUMN_NAME))
-                    val question = cursor.getString(cursor.getColumnIndex(DbContract.Quiz.COLUMN_QUESTION))
-                    val answer = cursor.getString(cursor.getColumnIndex(DbContract.Quiz.COLUMN_ANSWER))
-                    results.add(Result(id, name, question, answer))
+                    cursor.run {
+                        val id = getInt(getColumnIndex(DbContract.Quiz.COLUMN_USER_ID))
+                        val name = getString(getColumnIndex(DbContract.Quiz.COLUMN_NAME))
+                        val question = getString(getColumnIndex(DbContract.Quiz.COLUMN_QUESTION))
+                        val answer = getString(getColumnIndex(DbContract.Quiz.COLUMN_ANSWER))
+                        results.add(Result(id, name, question, answer))
+                    }
                 } while (cursor.moveToNext())
                 cursor.close()
             }
@@ -72,16 +74,17 @@ class QuizRepository {
             DbContract.Quiz.COLUMN_USER_ID
         )
         val cursor = database?.rawQuery(query, arrayOf(id.toString()))
-        if(cursor != null)
-        {
-            if (cursor.moveToFirst()) {
-                val id = cursor.getInt(cursor.getColumnIndex(DbContract.Quiz.COLUMN_USER_ID))
-                val name = cursor.getString(cursor.getColumnIndex(DbContract.Quiz.COLUMN_NAME))
-                val question = cursor.getString(cursor.getColumnIndex(DbContract.Quiz.COLUMN_QUESTION))
-                val answer = cursor.getString(cursor.getColumnIndex(DbContract.Quiz.COLUMN_ANSWER))
-                result = Result(id, name, question, answer)
+        if(cursor != null) {
+            cursor.run{
+                if (moveToFirst()) {
+                    val id = getInt(getColumnIndex(DbContract.Quiz.COLUMN_USER_ID))
+                    val name = getString(getColumnIndex(DbContract.Quiz.COLUMN_NAME))
+                    val question = getString(getColumnIndex(DbContract.Quiz.COLUMN_QUESTION))
+                    val answer = getString(getColumnIndex(DbContract.Quiz.COLUMN_ANSWER))
+                    result = Result(id, name, question, answer)
+                }
+                cursor.close()
             }
-            cursor.close()
         }
         return result
     }

@@ -1,5 +1,6 @@
 package com.example.lab1.Database
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -11,11 +12,7 @@ import com.example.lab1.R
 
 class ResultAdapter(context: Context, results: ArrayList<Result>) : ArrayAdapter<Result>(context, 0, results) {
 
-    override fun getPosition(item: Result?): Int {
-        if(item!=null) return item.id
-        else return 0
-    }
-
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
 

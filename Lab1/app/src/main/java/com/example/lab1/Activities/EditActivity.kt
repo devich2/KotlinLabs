@@ -60,11 +60,11 @@ class EditActivity : AppCompatActivity() {
         val rep = QuizRepository(this)
         rep.open()
         val result = rep.getResult(resultId)
-        if (result != null) {
-            editName.setText(result.name)
-            editQuestion.setText(result.question)
+        result?.let {
+            editName.setText(it.name)
+            editQuestion.setText(it.question)
             val delimiter = "\n"
-            val stringList = result.answer.split(delimiter)
+            val stringList = it.answer.split(delimiter)
             for (l in stringList) {
                 if (l.isNotEmpty()) {
                     val editText = EditText(this)
@@ -85,9 +85,8 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
-        val extras = intent.extras
-        if (extras != null) {
-            resultId = extras.getLong("id")
+        intent.extras?.let {
+            resultId = it.getLong("id")
         }
         init()
     }

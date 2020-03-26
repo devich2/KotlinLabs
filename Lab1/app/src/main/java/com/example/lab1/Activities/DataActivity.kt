@@ -30,21 +30,19 @@ class DataActivity : AppCompatActivity() {
         rep.close()
     }
 
-    fun truncate()
+    private fun truncate()
     {
         val rep = QuizRepository(this)
         rep.open()
         rep.truncate()
         rep.close()
-        //listView.visibility = View.INVISIBLE
         finish()
     }
-    fun addListeners()
+    private fun addListeners()
     {
         delete_all.setOnClickListener { truncate() }
         listView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 val intent = Intent(applicationContext, EditActivity::class.java)
                 val item = listView.getItemAtPosition(position) as Result
                 intent.putExtra("id", item.id.toLong())
