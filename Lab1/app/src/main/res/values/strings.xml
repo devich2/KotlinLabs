@@ -2,17 +2,18 @@
     <string name="app_name">Lab1</string>
     <string name="action_settings">Settings</string>
     <string-array name="options">
-        <item>Question</item>
-        <item>Option1</item>
-        <item>Option2</item>
-        <item>Option3</item>
-        <item>Option4</item>
+        <item>Languages</item>
+        <item>UK</item>
+        <item>UA</item>
+        <item>Russian</item>
+        <item>Polish</item>
     </string-array>
 
     <string-array name="options2">
-        <item>Question2</item>
-        <item>Option1</item>
-        <item>Option2</item>
+        <item>Favourite food</item>
+        <item>Fish</item>
+        <item>Meat</item>
+        <item>Fruits</item>
     </string-array>
 
 </resources>

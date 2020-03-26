@@ -19,6 +19,7 @@ abstract class QuizFragment : Fragment() {
     private lateinit var toBack: INavigation
     private lateinit var question: TextView
     private lateinit var checkedList: ArrayList<Int>
+
     abstract val resourceIdentifier: Int
     abstract val layoutIdentifier: Int
     abstract val questionIdentifier: Int
@@ -27,8 +28,7 @@ abstract class QuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(resourceIdentifier, container, false)
-        return view
+        return inflater.inflate(resourceIdentifier, container, false)
     }
 
     override fun onAttach(activity: Activity) {
@@ -85,7 +85,7 @@ abstract class QuizFragment : Fragment() {
                 var text = question.text
                 var noCheck = true
                 var CheckedIndex = 0
-                checkedList = ArrayList<Int>()
+                checkedList = ArrayList()
 
                 for (cb in checkBoxMap) {
                     if (cb.isChecked) {
@@ -121,6 +121,7 @@ abstract class QuizFragment : Fragment() {
         toast.setGravity(Gravity.TOP, x, y)
         toast.show()
     }
+
     private fun createLayout() {
 
         val linearLayout = view?.findViewById<LinearLayout>(layoutIdentifier);

@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 
-class FinalFragment : QuizFragment() {
+class FinalQuestionFragment : QuizFragment() {
     override val resourceIdentifier: Int = R.layout.final_question
     override val layoutIdentifier: Int = R.id.final_liner
     override val questionIdentifier: Int = R.array.options2
