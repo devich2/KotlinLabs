@@ -4,7 +4,9 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.lab1.Activities.DataActivity
 import com.example.lab1.Database.QuizRepository
 import com.example.lab1.Database.Result
@@ -17,11 +19,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), INavigation {
+    private var confirmed: Boolean = false
+    private val finalFragment = ::FinalFragment
+    private val initialFragment = ::QuestionFragment
+    private val detailFragment = ::DetailFragment
 
     override fun Cancel(frag: QuizFragment) {
         if (frag !is QuestionFragment) {
             supportFragmentManager.popBackStack()
-            DeleteLastInfo()
+            DeleteInfo(if(confirmed) 2 else 1)
         } else {
             frag.ShowDisplayButton(true)
         }
@@ -31,17 +37,24 @@ class MainActivity : AppCompatActivity(), INavigation {
         val fragment = supportFragmentManager.findFragmentById(R.id.frame2) as DetailFragment
         fragment.setText(question + "\nAnswers:" + bundle[question] as String)
         if (frag !is FinalFragment) {
-            val newFragment = FinalFragment()
-            newFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.frame1, newFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            var frag = finalFragment()
+            frag.arguments = bundle
+            replaceQuizFragment(frag)
+            confirmed = false
         } else {
             frag.ShowToast("Answer saved", 0, 800, Color.BLUE)
             saveData(bundle)
+            confirmed = true
             frag.ShowDisplayButton(false)
         }
+    }
+
+    private fun replaceQuizFragment(fragment: Fragment) {
+        val fragmentTransaction =
+            supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame1, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
     fun saveData(bundle: Bundle) {
@@ -68,15 +81,13 @@ class MainActivity : AppCompatActivity(), INavigation {
         }
     }
 
-    fun DeleteLastInfo() {
+    fun DeleteInfo(count: Int) {
         val fragment = supportFragmentManager.findFragmentById(R.id.frame2) as DetailFragment
-        fragment.deleteLast()
+        fragment.deleteLast(count)
     }
 
-    fun init() {
-        val list = QuestionFragment()
-        val detail = DetailFragment()
-        supportFragmentManager.beginTransaction().add(R.id.frame1, list).add(R.id.frame2, detail)
+    fun initFragments() {
+        supportFragmentManager.beginTransaction().add(R.id.frame1, initialFragment()).add(R.id.frame2, detailFragment())
             .commit()
         open.setOnClickListener { openData() }
     }
@@ -84,7 +95,7 @@ class MainActivity : AppCompatActivity(), INavigation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        init()
+        initFragments()
     }
 
 }

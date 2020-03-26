@@ -10,9 +10,10 @@
     </string-array>
 
     <string-array name="options2">
-        <item>Age</item>
-        <item>less 18</item>
-        <item>over 18</item>
+        <item>Favourite food</item>
+        <item>Meat</item>
+        <item>Fish</item>
+        <item>Fruits</item>
     </string-array>
 
 </resources>

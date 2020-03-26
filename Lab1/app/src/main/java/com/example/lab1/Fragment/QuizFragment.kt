@@ -26,8 +26,8 @@ abstract class QuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(resourceIdentifier, container, false)
         if(arguments != null) bundle = arguments as Bundle
+        val view = inflater.inflate(resourceIdentifier, container, false)
         return view
     }
 

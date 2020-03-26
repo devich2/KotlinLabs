@@ -24,20 +24,17 @@ class DetailFragment : Fragment() {
             6
         )
         v.setBackgroundColor(Color.YELLOW)
-
         linearLayout?.addView(textView)
         linearLayout?.addView(v)
     }
 
-    fun deleteLast() {
-        val list: MutableList<TextView> = mutableListOf()
-        val linearLayout = view?.findViewById<LinearLayout>(R.id.detail_liner);
-        for (i in 0 until linearLayout!!.childCount)
-            if (linearLayout.getChildAt(i) is TextView)
-                list.add(linearLayout.getChildAt(i) as TextView)
+    fun deleteLast(countDel: Int) {
 
-        linearLayout.removeView(list[list.size - 1])
-        linearLayout.removeViewAt(linearLayout.childCount - 1)
+        val linearLayout = view?.findViewById<LinearLayout>(R.id.detail_liner);
+        for (i in 1..countDel * 2)
+        {
+            linearLayout?.removeViewAt(linearLayout?.childCount - 1)
+        }
     }
 
     override fun onCreateView(

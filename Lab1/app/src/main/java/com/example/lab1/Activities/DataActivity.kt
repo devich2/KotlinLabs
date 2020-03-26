@@ -25,12 +25,7 @@ class DataActivity : AppCompatActivity() {
         val rep = QuizRepository(this)
         rep.open()
         val users = rep.getResults()
-        for(l in users)
-        {
-            Log.d("USER", l.id.toString())
-        }
         val resultAdapter = ResultAdapter(this, ArrayList(users))
-
         listView.adapter = resultAdapter
         rep.close()
     }
@@ -53,7 +48,6 @@ class DataActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, EditActivity::class.java)
                 val item = listView.getItemAtPosition(position) as Result
                 intent.putExtra("id", item.id.toLong())
-                Log.d("KET", item.id.toString())
                 startActivity(intent)
             }
     }
