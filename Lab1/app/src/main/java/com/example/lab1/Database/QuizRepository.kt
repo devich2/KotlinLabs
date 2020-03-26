@@ -60,6 +60,11 @@ class QuizRepository {
         return results
     }
 
+    fun isEmpty(): Boolean
+    {
+        return getCount() == 0L
+    }
+
     fun getCount(): Long {
         return DatabaseUtils.queryNumEntries(database,
             DbContract.Quiz.TABLE_NAME

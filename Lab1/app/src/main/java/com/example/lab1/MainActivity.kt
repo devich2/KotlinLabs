@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity(), Navigation {
             frag.ShowDisplayButton(true)
             confirmed = false
         }
-
     }
 
     override fun update(question: String, frag: QuizFragment, bundle: Bundle) {
@@ -41,14 +40,13 @@ class MainActivity : AppCompatActivity(), Navigation {
         val hasKey = dict.containsKey(frag::class.java)
         if (hasKey) {
             val newFrag = dict.getValue(frag::class.java).newInstance() as QuizFragment
-            newFrag.arguments = bundle
             replaceQuizFragment(newFrag)
         } else {
-            frag.showToast("Answer saved", 0, 800, Color.BLUE)
             frag.ShowDisplayButton(false)
-            saveData(bundle)
             confirmed = true
         }
+        frag.showToast("Answer saved", 0, 800, Color.BLUE)
+        saveData(bundle)
     }
 
     private fun replaceQuizFragment(fragment: Fragment) {
@@ -71,7 +69,7 @@ class MainActivity : AppCompatActivity(), Navigation {
 
     private fun openData() {
         rep.open()
-        if(rep.getCount() == 0L)
+        if(rep.isEmpty())
         {
             Toast.makeText(applicationContext, "Empty storage", Toast.LENGTH_SHORT).show()
         }
@@ -85,7 +83,7 @@ class MainActivity : AppCompatActivity(), Navigation {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        Toast.makeText(applicationContext, data?.getStringExtra("message"), Toast.LENGTH_SHORT).show()
     }
 
     private fun deleteInfo(count: Int) {

@@ -7,6 +7,9 @@ import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.example.lab1.Activities.DataActivity
+import com.example.lab1.MainActivity
 import com.example.lab1.R
 
 
@@ -26,9 +29,15 @@ class ResultAdapter(context: Context, results: ArrayList<Result>) : ArrayAdapter
 
         val tvName = convertView!!.findViewById(R.id.name) as TextView
 
-        val tvQuestion = convertView!!.findViewById(R.id.question) as TextView
+        val tvQuestion = convertView.findViewById(R.id.question) as TextView
 
-        val tvAnswer = convertView!!.findViewById(R.id.answer) as TextView
+        val tvAnswer = convertView.findViewById(R.id.answer) as TextView
+
+        val tvClicker = convertView.findViewById(R.id.click) as Button
+
+        tvClicker.setOnClickListener {
+            (context as DataActivity).startEdit(user.id)
+        }
 
         tvName.text = "Name: " + user.name
 

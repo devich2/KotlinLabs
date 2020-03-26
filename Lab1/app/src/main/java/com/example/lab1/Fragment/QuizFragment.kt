@@ -27,7 +27,6 @@ abstract class QuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        arguments?.let { bundle = it}
         return inflater.inflate(resourceIdentifier, container, false)
     }
 
@@ -130,7 +129,7 @@ abstract class QuizFragment : Fragment() {
         btnCancel = Button(context)
         checkBoxMap = mutableListOf()
 
-        btnDisplay.text = "Check answer!"
+        btnDisplay.text = "Next question"
         btnCancel.text = "Back"
         question.textSize = 15f
 

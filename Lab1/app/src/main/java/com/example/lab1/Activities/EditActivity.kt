@@ -1,5 +1,6 @@
 package com.example.lab1.Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -15,17 +16,6 @@ class EditActivity : AppCompatActivity() {
     var resultId: Long = 0
     var optionList: MutableList<EditText> = mutableListOf()
 
-    fun addEventListeners() {
-        val buttonUpdate = Button(this)
-        val buttonDelete = Button(this)
-        buttonUpdate.text = "Update"
-        buttonDelete.text = "Delete"
-        buttonUpdate.setOnClickListener { update() }
-        buttonDelete.setOnClickListener { delete() }
-        edit_liner.addView(buttonUpdate)
-        edit_liner.addView(buttonDelete)
-    }
-
     private fun getOptionList(): String {
         var text = ""
         for (ed in optionList) {
@@ -34,7 +24,7 @@ class EditActivity : AppCompatActivity() {
         return text
     }
 
-    fun update() {
+    private fun update() {
         val rep = QuizRepository(this).open()
 
         rep.update(
@@ -46,17 +36,25 @@ class EditActivity : AppCompatActivity() {
             )
         )
         rep.close()
-        finish()
+        goHome("Record edited...")
     }
 
-    fun delete() {
+    private fun delete() {
         val rep = QuizRepository(this).open()
         rep.delete(resultId)
         rep.close()
-        finish()
+        goHome("Record deleted...")
     }
 
-    fun createLayout() {
+    private fun goHome(message: String)
+    {
+        val output = Intent();
+        output.putExtra("message", message);
+        setResult(RESULT_OK, output);
+        finish();
+    }
+
+    private fun createLayout() {
         val rep = QuizRepository(this)
         rep.open()
         val result = rep.getResult(resultId)
@@ -77,7 +75,18 @@ class EditActivity : AppCompatActivity() {
         rep.close()
     }
 
-    fun init() {
+    private fun addEventListeners() {
+        val buttonUpdate = Button(this)
+        val buttonDelete = Button(this)
+        buttonUpdate.text = "Update"
+        buttonDelete.text = "Delete"
+        buttonUpdate.setOnClickListener { update() }
+        buttonDelete.setOnClickListener { delete() }
+        edit_liner.addView(buttonUpdate)
+        edit_liner.addView(buttonDelete)
+    }
+
+    private fun init() {
         createLayout()
         addEventListeners()
     }
