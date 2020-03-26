@@ -33,7 +33,7 @@ class DetailFragment : Fragment() {
         val linearLayout = view?.findViewById<LinearLayout>(R.id.detail_liner);
         for (i in 1..countDel * 2)
         {
-            linearLayout?.removeViewAt(linearLayout?.childCount - 1)
+            linearLayout?.removeViewAt(linearLayout.childCount - 1)
         }
     }
 

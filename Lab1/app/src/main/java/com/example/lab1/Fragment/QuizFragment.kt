@@ -14,10 +14,11 @@ abstract class QuizFragment : Fragment() {
     private lateinit var checkBoxMap: MutableList<CheckBox>
     private lateinit var btnDisplay: Button
     private lateinit var btnCancel: Button
-    private lateinit var callback: INavigation
+    private lateinit var callback: Navigation
     private lateinit var question: TextView
     private lateinit var checkedList: ArrayList<Int>
     private var bundle: Bundle = Bundle()
+
     abstract val resourceIdentifier: Int
     abstract val layoutIdentifier: Int
     abstract val questionIdentifier: Int
@@ -26,15 +27,14 @@ abstract class QuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if(arguments != null) bundle = arguments as Bundle
-        val view = inflater.inflate(resourceIdentifier, container, false)
-        return view
+        arguments?.let { bundle = it}
+        return inflater.inflate(resourceIdentifier, container, false)
     }
 
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         try {
-            callback = activity as INavigation
+            callback = activity as Navigation
         } catch (ex: ClassCastException) {
             throw ClassCastException("$ex must implement onSomeEventListener");
         }
@@ -121,6 +121,7 @@ abstract class QuizFragment : Fragment() {
         toast.setGravity(Gravity.TOP, x, y)
         toast.show()
     }
+
     private fun createLayout() {
 
         val linearLayout = view?.findViewById<LinearLayout>(layoutIdentifier);
@@ -137,7 +138,7 @@ abstract class QuizFragment : Fragment() {
         question.text = res[0]
 
         for (i in 1 until res.size) {
-            var checkBox = CheckBox(context)
+            val checkBox = CheckBox(context)
             checkBox.text = res[i]
             checkBoxMap.add(checkBox)
         }
