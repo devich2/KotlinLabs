@@ -1,34 +1,26 @@
 package com.example.lab1
 
-import android.annotation.TargetApi
-import android.content.Intent
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.widget.Button
+import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_audio.*
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.os.Build
-import android.util.Log
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.net.Uri
-import android.text.Editable
-import android.webkit.URLUtil
 
 
-class AudioActivity : AppCompatActivity() {
-    private lateinit var mediaPlayer: MediaPlayer
-    private lateinit var runnable: Runnable
+class AudioActivity : com.example.lab1.MediaPlayer() {
     private var handler: Handler = Handler()
     private var pauseFlag: Boolean = false
-    private lateinit var soundThread: Thread
-    private var uri: Uri? = null
+    override val openButton: Button
+        get() = findViewById(R.id.openStorageAudio)
+    override val saveButton: Button
+        get() = findViewById(R.id.saveUriAudio)
+    override val editText: EditText
+        get() = findViewById(R.id.editTextAudio)
+    override val playButton: Button
+        get() = findViewById(R.id.playAudio)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,47 +28,46 @@ class AudioActivity : AppCompatActivity() {
         setupListeners()
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private fun setupListeners() {
-        play.setOnClickListener {
+        playAudio.setOnClickListener {
             runnable = Runnable { playMusic() }
-            soundThread = Thread(runnable)
-            soundThread.run()
+            MediaThread = Thread(runnable)
+            MediaThread.run()
         }
-            pause.setOnClickListener {
+        pause.setOnClickListener {
                 if (mediaPlayer.isPlaying) {
                     mediaPlayer.pause()
                     pauseFlag = true
-                    play.isEnabled = true
+                    playAudio.isEnabled = true
                     pause.isEnabled = false
                     stop.isEnabled = true
                 }
             }
-            stop.setOnClickListener {
+        stop.setOnClickListener {
                 if (mediaPlayer.isPlaying || pauseFlag) {
                     pauseFlag = false
                     seekBar.progress = 0
                     mediaPlayer.stop()
                     releaseMP()
                     handler.removeCallbacks(runnable)
-                    play.isEnabled = true
+                    playAudio.isEnabled = true
                     pause.isEnabled = false
                     stop.isEnabled = false
                     tv_pass.text = ""
                     tv_due.text = ""
                 }
             }
-            save.setOnClickListener { saveUri() }
-            openStorage.setOnClickListener {openFileStorage()}
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                    if (b) {
-                        mediaPlayer.seekTo(i * 1000)
-                    }
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                if (b) {
+                    mediaPlayer.seekTo(i * 1000)
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
-            })
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+
+        setUpAdditionListeners()
     }
     private fun playMusic()
 {
@@ -93,11 +84,11 @@ class AudioActivity : AppCompatActivity() {
             mediaPlayer.start()
         }
         initializeSeekBar()
-        play.isEnabled = false
+        playAudio.isEnabled = false
         pause.isEnabled = true
         stop.isEnabled = true
         mediaPlayer.setOnCompletionListener {
-            play.isEnabled = true
+            playAudio.isEnabled = true
             pause.isEnabled = false
             stop.isEnabled = false
         }
@@ -105,42 +96,6 @@ class AudioActivity : AppCompatActivity() {
     else
         Toast.makeText(this,"Bro:(",Toast.LENGTH_SHORT).show()
 }
-    private fun saveUri(){
-        val text = editText.text.toString()
-        if(URLUtil.isValidUrl(text))
-        {
-            uri = Uri.parse(text)
-            Toast.makeText(this,"Bro:)",Toast.LENGTH_SHORT).show()
-        }
-        else
-            Toast.makeText(this,"Bro:(",Toast.LENGTH_SHORT).show()
-        editText.setText("")
-    }
-
-    private fun openFileStorage() {
-        val intent = Intent()
-            .setType("audio/*")
-            .setAction(Intent.ACTION_GET_CONTENT)
-
-        startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 111 && resultCode == RESULT_OK) {
-            uri = data?.data //The uri with the location of the file
-        }
-    }
-
-    private fun releaseMP() {
-        try {
-            mediaPlayer.reset()
-            mediaPlayer.release()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
     private fun initializeSeekBar() {
         seekBar.max = mediaPlayer.seconds
 
