@@ -1,27 +1,6 @@
 <resources>
     <string name="app_name">Lab1</string>
     <string name="action_settings">Settings</string>
-    <string-array name="options">
-        <item>Languages</item>
-        <item>Russian</item>
-        <item>Ukraine</item>
-        <item>English</item>
-        <item>Japanese</item>
-    </string-array>
-
-    <string-array name="options2">
-        <item>Favourite food</item>
-        <item>Meat</item>
-        <item>Fish</item>
-        <item>Fruits</item>
-    </string-array>
-
-    <string-array name="options3">
-    <item>Favourite films</item>
-    <item>Walk Street</item>
-    <item>Source code</item>
-    <item>Shine</item>
-</string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
